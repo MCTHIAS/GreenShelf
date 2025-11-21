@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="product-detail-container">
+    <div class="product-detail-card">
+        <div class="detail-image">
+            <img src="{{ produto.imagem or url_for('static', filename='default.png') }}" alt="{{ produto.nome }}">
+        </div>
+        <div class="detail-info">
+            <h1>{{ produto.nome }}</h1>
+            <p class="store-name">Vendido por: <strong>{{ produto.comercio.nome_comercio }}</strong></p>
+            <div class="price-info">
+                <span class="original-price">De R$ {{ "%.2f"|format(produto.preco_original) }}</span>
+                <span class="discount-price">Por R$ {{ "%.2f"|format(produto.preco_desconto) }}</span>
+            </div>
+            <p class="validity">Disponível até: {{ produto.validade.strftime('%d/%m/%Y') }}</p>
+            <p class="quantity">Restam {{ produto.quantidade }} unidades</p>
+        </div>
+    </div>
+
+    <div class="address-container">
+        <h2>Localização do Comércio</h2>
+        {% if produto.comercio.endereco %}
+            <p>{{ produto.comercio.endereco }}</p>
+        {% else %}
+            <p>Este comércio não forneceu um endereço.</p>
+        {% endif %}
+    </div>
+    
+</div>
+
+{% endblock %}

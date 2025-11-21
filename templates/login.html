@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Login do Comércio</h2>
+    <form method="POST" action="{{ url_for('login') }}">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.senha.label }}
+            {{ form.senha(class="form-control") }}
+        </div>
+        {{ form.submit(class="submit-btn") }}
+    </form>
+    <p>Ainda não tem conta? <a href="{{ url_for('cadastrar') }}">Cadastre-se</a>.</p>
+</div>
+{% endblock %}

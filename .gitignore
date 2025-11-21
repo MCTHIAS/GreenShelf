@@ -1,0 +1,22 @@
+# Ambiente Virtual
+venv/
+.venv/
+
+# Cache do Python
+__pycache__/
+*.pyc
+
+# Banco de Dados Local (não usado mais, mas bom manter)
+*.db
+*.sqlite3
+
+# Arquivos de Configuração do Editor e do Sistema
+.vscode/
+.DS_Store
+
+# Ficheiro de Variáveis de Ambiente
+*.env
+
+# Pastas de deploy e de instância
+instance/
+.vercel/

@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Cadastro para Comércios</h2>
+    <form method="POST" action="{{ url_for('cadastrar') }}">
+        {{ form.csrf_token }}
+
+        <div class="form-group">
+            {{ form.nome_comercio.label }}
+            {{ form.nome_comercio() }}
+        </div>
+
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email() }}
+        </div>
+
+        <div class="form-group">
+            {{ form.senha.label }}
+            {{ form.senha() }}
+        </div>
+
+        <div class="form-group">
+            {{ form.confirmar_senha.label }}
+            {{ form.confirmar_senha() }}
+        </div>
+
+        <div class="form-group">
+            {{ form.endereco.label }}
+            {{ form.endereco() }}
+        </div>
+
+        {{ form.submit(class="submit-btn") }}
+    </form>
+    <p>Já tem uma conta? <a href="{{ url_for('login') }}">Faça login aqui</a>.</p>
+</div>
+
+{% endblock %}
+

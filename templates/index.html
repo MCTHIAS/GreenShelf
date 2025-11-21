@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="banner">
+    <div class="banner-content">
+        <div class="banner-left">
+            <h1>GreenShelf</h1>
+        </div>
+        <div class="banner-right">
+            <h2>Reduza o desperdício.<br>Economize dinheiro.</h2>
+        </div>
+    </div>
+</section>
+
+<div class="product-section">
+    <h2>Ofertas Fresquinhas 🥬</h2>
+    <div class="product-grid">
+        {% if produtos %}
+            {% for produto in produtos %}
+                <a href="{{ url_for('detalhe_produto', produto_id=produto.id) }}" class="product-card-link">
+                    <div class="product-card">
+                        <img src="{{ produto.imagem or url_for('static', filename='default.png') }}" alt="{{ produto.nome }}">
+                        <div class="card-info">
+                            <h3>{{ produto.nome }}</h3>
+                            <p class="store-name">{{ produto.comercio.nome_comercio }}</p>
+                            <div class="price-info">
+                                <span class="original-price">R$ {{ "%.2f"|format(produto.preco_original) }}</span>
+                                <span class="discount-price">R$ {{ "%.2f"|format(produto.preco_desconto) }}</span>
+                            </div>
+                            <p class="validity">Validade: {{ produto.validade.strftime('%d/%m/%Y') }}</p>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; width: 100%;">Nenhum produto disponível no momento.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="dashboard-container">
+    <h2>Dashboard de {{ current_user.nome_comercio }}</h2>
+
+    <div class="delete-account-section">
+        <form action="{{ url_for('excluir_conta') }}" method="POST" onsubmit="return confirmAccountDeletion();">
+            <input type="submit" value="Excluir Minha Conta Permanentemente" class="delete-account-btn">
+        </form>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{{ url_for('editar_perfil') }}" class="edit-profile-btn">Editar Dados do Comércio</a>
+    </div>
+
+    <div class="form-container add-product-form">
+        <h3>Adicionar Novo Produto</h3>
+        <form method="POST" action="{{ url_for('adicionar_produto') }}" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                {{ form.nome.label }}
+                {{ form.nome() }}
+            </div>
+            <div class="form-group">
+                {{ form.preco_original.label }}
+                {{ form.preco_original() }}
+            </div>
+            <div class="form-group">
+                {{ form.preco_desconto.label }}
+                {{ form.preco_desconto() }}
+            </div>
+            <div class="form-group">
+                {{ form.validade.label }}
+                {{ form.validade() }}
+            </div>
+            <div class="form-group">
+                {{ form.quantidade.label }}
+                {{ form.quantidade() }}
+            </div>
+            <div class="form-group">
+                {{ form.imagem.label }}
+                {{ form.imagem() }}
+            </div>
+            {{ form.submit(class="submit-btn") }}
+        </form>
+    </div>
+
+    <h3>Seus Produtos Cadastrados</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Imagem</th>
+                    <th>Produto</th>
+                    <th>Preço Original</th>
+                    <th>Preço Desconto</th>
+                    <th>Validade</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if produtos %}
+                    {% for produto in produtos %}
+                    <tr>
+                        <td><img src="{{ produto.imagem or url_for('static', filename='default.png') }}" alt="{{ produto.nome }}" width="60"></td>
+                        <td>{{ produto.nome }}</td>
+                        <td>R$ {{ "%.2f"|format(produto.preco_original) }}</td>
+                        <td>R$ {{ "%.2f"|format(produto.preco_desconto) }}</td>
+                        <td>{{ produto.validade.strftime('%d/%m/%Y') }}</td>
+                        <td>
+                            <form action="{{ url_for('deletar_produto', produto_id=produto.id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar este produto?');">
+                                <input type="submit" value="Deletar" class="delete-btn">
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Você ainda não cadastrou nenhum produto.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    function confirmAccountDeletion() {
+        const confirmationText = "DELETAR CONTA";
+        const userInput = prompt("Esta ação é IRREVERSÍVEL e apagará todos os seus produtos.\n\nPara confirmar, digite exatamente '" + confirmationText + "' na caixa abaixo.");
+
+        if (userInput === confirmationText) {
+            return true;
+        }
+        else if (userInput !== null) {
+            alert("O texto inserido está incorreto. A exclusão foi cancelada.");
+            return false;
+        }
+        else {
+            alert("A exclusão foi cancelada.");
+            return false;
+        }
+    }
+</script>
+
+{% endblock %}
